@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Слайд 2 — Що ви вже знаєте?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --deep:   #0d0a1a;
+      --purple: #3d1f6e;
+      --violet: #6b3fa0;
+      --indigo: #4361ee;
+      --accent: #c084fc;
+      --gold:   #f59e0b;
+      --green:  #34d399;
+      --red:    #f87171;
+      --white:  #f0eaf8;
+      --muted:  rgba(240,234,248,0.55);
+      --card:   rgba(255,255,255,0.04);
+      --border: rgba(192,132,252,0.18);
+    }
+
+    html, body { height: 100%; background: var(--deep); font-family: 'DM Sans', sans-serif; color: var(--white); overflow: hidden; }
+
+    /* BG */
+    .bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse 80% 70% at 60% 40%, #2d1060 0%, #0d0a1a 70%); }
+    .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; animation: drift 12s ease-in-out infinite alternate; }
+    .orb1 { width: 500px; height: 500px; background: radial-gradient(circle, #7c3aed, #4338ca); top: -100px; right: -80px; }
+    .orb2 { width: 350px; height: 350px; background: radial-gradient(circle, #c084fc, #7c3aed); bottom: -80px; left: 5%; animation-delay: -5s; }
+    .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(192,132,252,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(192,132,252,0.06) 1px, transparent 1px); background-size: 48px 48px; }
+    @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(25px,-18px) scale(1.07); } }
+
+    /* PROGRESS */
+    .progress-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 3px; background: rgba(255,255,255,0.08); }
+    .progress-fill { height: 100%; width: 22.2%; background: linear-gradient(90deg, var(--indigo), var(--accent)); border-radius: 0 2px 2px 0; }
+
+    /* TOP NAV */
+    .top-nav { position: fixed; top: 12px; left: 0; right: 0; z-index: 99; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+    .pmi-badge { display: flex; align-items: center; gap: 10px; font-family: 'Syne', sans-serif; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .pmi-icon { width: 28px; height: 28px; background: linear-gradient(135deg, #f59e0b, #ef4444); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 10px; color: white; }
+    .slide-counter { font-family: 'Syne', sans-serif; font-size: 11px; letter-spacing: 0.12em; color: var(--muted); }
+
+    /* LAYOUT */
+    .slide { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 80px 80px 80px; gap: 28px; }
+
+    .slide-header { animation: fadeUp 0.7s ease both; }
+    .pre-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); border-radius: 100px; padding: 5px 14px; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+
+    h1 { font-family: 'Syne', sans-serif; font-size: clamp(26px, 3vw, 38px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+    h1 span { background: linear-gradient(90deg, var(--accent), var(--indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { font-size: 13px; color: var(--muted); margin-top: 6px; font-style: italic; }
+
+    /* DRAG AREA */
+    .drag-arena { display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: start; animation: fadeUp 0.7s 0.15s ease both; }
+
+    /* TERMS */
+    .terms-col { display: flex; flex-direction: column; gap: 10px; }
+    .col-label { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+
+    .term-card {
+      background: rgba(192,132,252,0.1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 600;
+      cursor: grab;
+      transition: all 0.2s ease;
+      user-select: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .term-card:hover { background: rgba(192,132,252,0.18); border-color: rgba(192,132,252,0.4); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,58,237,0.25); }
+    .term-card.dragging { opacity: 0.4; cursor: grabbing; transform: scale(0.97); }
+    .term-card.matched { background: rgba(52,211,153,0.1); border-color: rgba(52,211,153,0.35); cursor: default; pointer-events: none; }
+    .term-card.matched .term-dot { background: var(--green); }
+    .term-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .term-uk { color: var(--white); }
+    .term-en { font-size: 10px; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; font-style: italic; margin-left: auto; }
+
+    /* CENTER ARROW */
+    .center-col { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 28px; gap: 8px; color: var(--muted); font-size: 20px; }
+    .arrow-hint { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); writing-mode: horizontal-tb; }
+
+    /* DROP ZONES */
+    .defs-col { display: flex; flex-direction: column; gap: 10px; }
+
+    .drop-zone {
+      background: var(--card);
+      border: 1.5px dashed rgba(192,132,252,0.2);
+      border-radius: 12px;
+      padding: 12px 18px;
+      min-height: 52px;
+      font-size: 13px;
+      color: var(--muted);
+      transition: all 0.2s ease;
+      display: flex; align-items: center;
+      position: relative;
+    }
+    .drop-zone.over { border-color: var(--accent); background: rgba(192,132,252,0.08); box-shadow: 0 0 0 1px rgba(192,132,252,0.3); }
+    .drop-zone.correct { border-color: var(--green); background: rgba(52,211,153,0.07); border-style: solid; }
+    .drop-zone.wrong { border-color: var(--red); background: rgba(248,113,113,0.07); border-style: solid; animation: shake 0.4s ease; }
+    .drop-zone .def-text { font-size: 12.5px; line-height: 1.45; }
+    .drop-zone .matched-term { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--green); }
+    .drop-zone .check-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; }
+
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+    /* SUBMIT */
+    .submit-row { display: flex; align-items: center; gap: 20px; animation: fadeUp 0.7s 0.3s ease both; }
+    .btn-submit {
+      display: flex; align-items: center; gap: 8px;
+      padding: 13px 32px; border-radius: 100px;
+      background: linear-gradient(135deg, var(--violet), var(--indigo));
+      color: white; border: none; cursor: pointer;
+      font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      box-shadow: 0 4px 24px rgba(99,57,160,0.4);
+      transition: all 0.25s ease;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,57,160,0.6); }
+    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .score-text { font-family: 'Syne', sans-serif; font-size: 13px; color: var(--muted); }
+    .score-text strong { color: var(--accent); }
+
+    /* RESULT MESSAGE */
+    .result-msg { display: none; padding: 14px 20px; border-radius: 12px; font-size: 13px; line-height: 1.5; }
+    .result-msg.show { display: block; animation: fadeUp 0.4s ease both; }
+    .result-msg.success { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25); color: var(--green); }
+    .result-msg.partial { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); color: var(--gold); }
+
+    /* BOTTOM NAV */
+    .bottom-nav { position: fixed; bottom: 28px; left: 0; right: 0; z-index: 99; display: flex; align-items: center; justify-content: space-between; padding: 0 60px; }
+    .nav-info { font-size: 12px; color: var(--muted); font-family: 'Syne', sans-serif; letter-spacing: 0.08em; }
+    .nav-buttons { display: flex; gap: 12px; }
+    .btn { display: flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 100px; font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border: none; text-decoration: none; transition: all 0.25s ease; }
+    .btn-ghost { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--muted); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+    .btn-primary { background: linear-gradient(135deg, var(--violet), var(--indigo)); color: white; box-shadow: 0 4px 24px rgba(99,57,160,0.4); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99,57,160,0.6); }
+    .btn svg { width: 16px; height: 16px; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="grid"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill"></div></div>
+
+<nav class="top-nav">
+  <div class="pmi-badge">
+    <div class="pmi-icon">PM</div>
+    PMBOK® Guide · 8th Edition
+  </div>
+  <div class="slide-counter">Слайд 2 / 9 · Урок 1</div>
+</nav>
+
+<main class="slide">
+
+  <div class="slide-header">
+    <div class="pre-tag">⚡ Pre-check · Перевірка знань</div>
+    <h1>Що ви вже <span>знаєте?</span></h1>
+    <p class="subtitle">What do you already know? · Перетягніть термін до його визначення</p>
+  </div>
+
+  <div class="drag-arena">
+
+    <!-- TERMS -->
+    <div class="terms-col">
+      <div class="col-label">Терміни / Terms</div>
+      <div class="term-card" draggable="true" data-term="project" id="term-project">
+        <span class="term-dot"></span>
+        <span class="term-uk">Проєкт</span>
+        <span class="term-en">Project</span>
+      </div>
+      <div class="term-card" draggable="true" data-term="program" id="term-program">
+        <span class="term-dot"></span>
+        <span class="term-uk">Програма</span>
+        <span class="term-en">Program</span>
+      </div>
+      <div class="term-card" draggable="true" data-term="portfolio" id="term-portfolio">
+        <span class="term-dot"></span>
+        <span class="term-uk">Портфель</span>
+        <span class="term-en">Portfolio</span>
+      </div>
+      <div class="term-card" draggable="true" data-term="value" id="term-value">
+        <span class="term-dot"></span>
+        <span class="term-uk">Цінність</span>
+        <span class="term-en">Value</span>
+      </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="center-col">
+      <span>→</span>
+      <span class="arrow-hint">drag</span>
+    </div>
+
+    <!-- DROP ZONES -->
+    <div class="defs-col">
+      <div class="col-label">Визначення / Definitions</div>
+
+      <div class="drop-zone" data-accepts="portfolio" id="drop-portfolio">
+        <span class="def-text">Збірка програм і проєктів для досягнення стратегічних цілей організації</span>
+      </div>
+
+      <div class="drop-zone" data-accepts="value" id="drop-value">
+        <span class="def-text">Перевищення фінансових і нефінансових вигод над інвестиціями</span>
+      </div>
+
+      <div class="drop-zone" data-accepts="project" id="drop-project">
+        <span class="def-text">Тимчасова ініціатива в унікальному контексті для створення цінності</span>
+      </div>
+
+      <div class="drop-zone" data-accepts="program" id="drop-program">
+        <span class="def-text">Група пов'язаних проєктів, керованих спільно для отримання вигод</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-row">
+    <button class="btn-submit" id="submitBtn" onclick="checkAnswers()">
+      ✓ &nbsp;НАДІСЛАТИ / SUBMIT
+    </button>
+    <div class="score-text" id="scoreText"></div>
+  </div>
+
+  <div class="result-msg" id="resultMsg"></div>
+
+</main>
+
+<nav class="bottom-nav">
+  <div class="nav-info">Урок 1 · Вступ до управління проєктами</div>
+  <div class="nav-buttons">
+    <a class="btn btn-ghost" href="slide1.html">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+      НАЗАД
+    </a>
+    <a class="btn btn-primary" href="slide3.html" id="nextBtn">
+      ДАЛІ
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg>
+    </a>
+  </div>
+</nav>
+
+<script>
+  let dragged = null;
+  const matched = {};
+
+  // Drag events on term cards
+  document.querySelectorAll('.term-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      dragged = card;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+    });
+  });
+
+  // Drop zone events
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('over');
+    });
+    zone.addEventListener('dragleave', () => {
+      zone.classList.remove('over');
+    });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('over');
+      if (!dragged) return;
+
+      const termKey = dragged.dataset.term;
+      const accepts = zone.dataset.accepts;
+
+      // Remove previous match from this zone
+      const prevTerm = Object.keys(matched).find(k => matched[k] === zone.id);
+      if (prevTerm) {
+        delete matched[prevTerm];
+        const prevCard = document.getElementById('term-' + prevTerm);
+        if (prevCard) { prevCard.classList.remove('matched'); prevCard.draggable = true; }
+      }
+
+      // Remove this term from any other zone
+      if (matched[termKey]) {
+        const oldZone = document.getElementById(matched[termKey]);
+        if (oldZone) { oldZone.innerHTML = oldZone.dataset.defText || oldZone.innerHTML; oldZone.classList.remove('correct','wrong'); }
+      }
+
+      matched[termKey] = zone.id;
+      dragged.classList.add('matched');
+      dragged.draggable = false;
+
+      // Show term name in zone
+      zone.innerHTML = `<span class="matched-term">${dragged.querySelector('.term-uk').textContent} (${dragged.querySelector('.term-en').textContent})</span>`;
+      zone.classList.remove('correct','wrong');
+    });
+  });
+
+  function checkAnswers() {
+    let correct = 0;
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+      const accepts = zone.dataset.accepts;
+      const termInZone = Object.keys(matched).find(k => matched[k] === zone.id);
+      zone.classList.remove('correct','wrong');
+      if (termInZone === accepts) {
+        correct++;
+        zone.classList.add('correct');
+        if (!zone.querySelector('.check-icon')) {
+          const icon = document.createElement('span');
+          icon.className = 'check-icon'; icon.textContent = '✓';
+          zone.appendChild(icon);
+        }
+      } else if (termInZone) {
+        zone.classList.add('wrong');
+      }
+    });
+
+    const total = 4;
+    const scoreEl = document.getElementById('scoreText');
+    const msgEl = document.getElementById('resultMsg');
+    scoreEl.innerHTML = `Правильно: <strong>${correct}/${total}</strong>`;
+
+    msgEl.className = 'result-msg show';
+    if (correct === total) {
+      msgEl.className += ' success';
+      msgEl.innerHTML = '🎉 Чудово! Ви вже знайомі з основними термінами PMBOK® 8. Рухаємось далі!';
+    } else {
+      msgEl.className += ' partial';
+      msgEl.innerHTML = `💡 ${correct} з ${total} правильно. Не хвилюйтесь — у наступних слайдах ми детально розберемо кожен термін!`;
+    }
+  }
+</script>
+</body>
+</html>
