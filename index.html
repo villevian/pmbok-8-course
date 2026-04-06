@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMBOK 8 Course — Index</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --deep: #0d0a1a; --violet: #6b3fa0; --indigo: #4361ee;
+      --accent: #c084fc; --white: #f0eaf8; --muted: rgba(240,234,248,0.55);
+    }
+    html, body { min-height: 100%; background: var(--deep); font-family: 'DM Sans', sans-serif; color: var(--white); }
+    .bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse 80% 70% at 50% 30%, #2d1060 0%, #0d0a1a 70%); }
+    .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.3; }
+    .orb1 { width: 500px; height: 500px; background: radial-gradient(circle, #7c3aed, #4338ca); top: -100px; right: -80px; }
+    .orb2 { width: 300px; height: 300px; background: radial-gradient(circle, #c084fc, #7c3aed); bottom: 0; left: 0; }
+    .grid { position: fixed; inset: 0; background-image: linear-gradient(rgba(192,132,252,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(192,132,252,0.05) 1px, transparent 1px); background-size: 48px 48px; }
+
+    .wrap { position: relative; z-index: 10; max-width: 760px; margin: 0 auto; padding: 60px 32px 80px; }
+
+    .header { margin-bottom: 48px; animation: fadeUp 0.7s ease both; }
+    .pmi-badge { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; font-family: 'Syne', sans-serif; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .pmi-icon { width: 28px; height: 28px; background: linear-gradient(135deg, #f59e0b, #ef4444); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 10px; color: white; }
+    h1 { font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 42px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+    h1 span { background: linear-gradient(90deg, var(--accent), var(--indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { font-size: 14px; color: var(--muted); }
+
+    .section-label { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-left: 4px; }
+
+    .slides-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 48px; }
+
+    .slide-link {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(192,132,252,0.15);
+      border-radius: 14px;
+      text-decoration: none; color: inherit;
+      transition: all 0.25s ease;
+      animation: fadeUp 0.6s ease both;
+    }
+    .slide-link:hover { background: rgba(192,132,252,0.08); border-color: rgba(192,132,252,0.35); transform: translateX(6px); }
+    .slide-link:nth-child(1){animation-delay:0.1s;}
+    .slide-link:nth-child(2){animation-delay:0.18s;}
+    .slide-link:nth-child(3){animation-delay:0.26s;}
+
+    .slide-num {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    }
+    .num-1 { background: rgba(124,58,237,0.2); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+    .num-2 { background: rgba(37,99,235,0.2); color: #60a5fa; border: 1px solid rgba(37,99,235,0.3); }
+    .num-3 { background: rgba(8,145,178,0.2); color: #22d3ee; border: 1px solid rgba(8,145,178,0.3); }
+
+    .slide-info { flex: 1; }
+    .slide-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .slide-desc { font-size: 12px; color: var(--muted); }
+    .slide-type { font-size: 10px; padding: 2px 10px; border-radius: 100px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--muted); flex-shrink: 0; }
+    .slide-arrow { color: var(--muted); font-size: 18px; transition: transform 0.2s ease; }
+    .slide-link:hover .slide-arrow { transform: translateX(4px); color: var(--accent); }
+
+    .status-badge {
+      font-size: 10px; padding: 3px 10px; border-radius: 100px; flex-shrink: 0;
+      font-family: 'Syne', sans-serif; letter-spacing: 0.05em;
+    }
+    .status-done { background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.3); color: #34d399; }
+    .status-soon { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); color: #f59e0b; }
+
+    .divider { height: 1px; background: rgba(192,132,252,0.1); margin-bottom: 32px; }
+
+    .coming-list { display: flex; flex-direction: column; gap: 8px; }
+    .coming-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.02);
+      border: 1px dashed rgba(192,132,252,0.1);
+      border-radius: 14px;
+      opacity: 0.6;
+      animation: fadeUp 0.6s ease both;
+    }
+    .coming-item:nth-child(1){animation-delay:0.3s;}
+    .coming-item:nth-child(2){animation-delay:0.38s;}
+    .coming-item:nth-child(3){animation-delay:0.46s;}
+    .coming-item:nth-child(4){animation-delay:0.54s;}
+    .coming-item:nth-child(5){animation-delay:0.62s;}
+    .coming-item:nth-child(6){animation-delay:0.7s;}
+
+    .coming-num { width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.1); color: var(--muted); }
+    .coming-info { flex: 1; }
+    .coming-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 2px; }
+    .coming-desc { font-size: 11px; color: rgba(240,234,248,0.3); }
+
+    .btn-start {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-top: 40px;
+      padding: 14px 32px; border-radius: 100px;
+      background: linear-gradient(135deg, var(--violet), var(--indigo));
+      color: white; text-decoration: none;
+      font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      box-shadow: 0 4px 24px rgba(99,57,160,0.4);
+      transition: all 0.25s ease;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    .btn-start:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(99,57,160,0.6); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+  </style>
+</head>
+<body>
+<div class="bg">
+  <div class="grid"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
+
+<div class="wrap">
+  <div class="header">
+    <div class="pmi-badge">
+      <div class="pmi-icon">PM</div>
+      PMBOK® Guide · 8th Edition
+    </div>
+    <h1>Урок 1 — <span>Вступ до управління проєктами</span></h1>
+    <p class="subtitle">Introduction to Project Management · Перегляд слайдів</p>
+  </div>
+
+  <!-- READY -->
+  <div class="section-label">✅ Готові слайди</div>
+  <div class="slides-list">
+
+    <a class="slide-link" href="lesson1/slide1.html">
+      <div class="slide-num num-1">01</div>
+      <div class="slide-info">
+        <div class="slide-title">Title Slide — Вступ</div>
+        <div class="slide-desc">Заголовок, learning outcomes, анімована сфера</div>
+      </div>
+      <span class="slide-type">Title</span>
+      <span class="status-badge status-done">✓ Готово</span>
+      <span class="slide-arrow">→</span>
+    </a>
+
+    <a class="slide-link" href="lesson1/slide2.html">
+      <div class="slide-num num-2">02</div>
+      <div class="slide-info">
+        <div class="slide-title">Pre-check — Що ви вже знаєте?</div>
+        <div class="slide-desc">Drag & drop — з'єднайте термін з визначенням</div>
+      </div>
+      <span class="slide-type">Interactive</span>
+      <span class="status-badge status-done">✓ Готово</span>
+      <span class="slide-arrow">→</span>
+    </a>
+
+    <a class="slide-link" href="lesson1/slide3.html">
+      <div class="slide-num num-3">03</div>
+      <div class="slide-info">
+        <div class="slide-title">Sections — Розділи уроку</div>
+        <div class="slide-desc">Навігаційні стрілчасті рядки з анімацією</div>
+      </div>
+      <span class="slide-type">Navigation</span>
+      <span class="status-badge status-done">✓ Готово</span>
+      <span class="slide-arrow">→</span>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- COMING SOON -->
+  <div class="section-label">🔜 Наступні слайди</div>
+  <div class="coming-list">
+    <div class="coming-item">
+      <div class="coming-num">04</div>
+      <div class="coming-info">
+        <div class="coming-title">Що таке проєкт? — клікабельні ➕</div>
+        <div class="coming-desc">What is a Project? · Секція 1</div>
+      </div>
+      <span class="status-badge status-soon">Далі</span>
+    </div>
+    <div class="coming-item">
+      <div class="coming-num">05</div>
+      <div class="coming-info">
+        <div class="coming-title">Ключові терміни — flip-картки</div>
+        <div class="coming-desc">Key Terms & Concepts · Секція 2</div>
+      </div>
+      <span class="status-badge status-soon">Далі</span>
+    </div>
+    <div class="coming-item">
+      <div class="coming-num">06</div>
+      <div class="coming-info">
+        <div class="coming-title">Управління проєктами + відео</div>
+        <div class="coming-desc">Project Management · Секція 3</div>
+      </div>
+      <span class="status-badge status-soon">Далі</span>
+    </div>
+    <div class="coming-item">
+      <div class="coming-num">07</div>
+      <div class="coming-info">
+        <div class="coming-title">Портфель · Програма · Проєкт</div>
+        <div class="coming-desc">Portfolio · Program · Project · Секція 4</div>
+      </div>
+      <span class="status-badge status-soon">Далі</span>
+    </div>
+    <div class="coming-item">
+      <div class="coming-num">08</div>
+      <div class="coming-info">
+        <div class="coming-title">Optional — Quiz</div>
+        <div class="coming-desc">5 питань multiple choice · Перевірка знань</div>
+      </div>
+      <span class="status-badge status-soon">Далі</span>
+    </div>
+    <div class="coming-item">
+      <div class="coming-num">09</div>
+      <div class="coming-info">
+        <div class="coming-title">Optional — Go Deeper</div>
+        <div class="coming-desc">Додаткові матеріали, ресурси, AI role play</div>
+      </div>
+      <span class="status-badge status-soon">Далі</span>
+    </div>
+  </div>
+
+  <a class="btn-start" href="lesson1/slide1.html">
+    ▶ &nbsp;Почати з Слайду 1
+  </a>
+</div>
+</body>
+</html>
