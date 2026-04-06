@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Слайд 3 — Розділи уроку</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --deep:   #0d0a1a;
+      --violet: #6b3fa0;
+      --indigo: #4361ee;
+      --accent: #c084fc;
+      --white:  #f0eaf8;
+      --muted:  rgba(240,234,248,0.55);
+      --border: rgba(192,132,252,0.18);
+    }
+
+    html, body { height: 100%; background: var(--deep); font-family: 'DM Sans', sans-serif; color: var(--white); overflow: hidden; }
+
+    .bg { position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse 90% 80% at 40% 50%, #1e0a3c 0%, #0d0a1a 65%); }
+    .orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.3; animation: drift 14s ease-in-out infinite alternate; }
+    .orb1 { width: 500px; height: 500px; background: radial-gradient(circle, #7c3aed, #4338ca); top: -120px; right: -80px; }
+    .orb2 { width: 300px; height: 300px; background: radial-gradient(circle, #0891b2, #4361ee); bottom: -60px; left: 5%; animation-delay:-5s; }
+    .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(192,132,252,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(192,132,252,0.05) 1px, transparent 1px); background-size: 48px 48px; }
+    @keyframes drift { from{transform:translate(0,0) scale(1);} to{transform:translate(20px,-15px) scale(1.06);} }
+
+    .progress-bar { position: fixed; top:0; left:0; right:0; z-index:100; height:3px; background:rgba(255,255,255,0.08); }
+    .progress-fill { height:100%; width:33.3%; background:linear-gradient(90deg,var(--indigo),var(--accent)); border-radius:0 2px 2px 0; }
+
+    .top-nav { position:fixed; top:12px; left:0; right:0; z-index:99; display:flex; align-items:center; justify-content:space-between; padding:0 40px; }
+    .pmi-badge { display:flex; align-items:center; gap:10px; font-family:'Syne',sans-serif; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); }
+    .pmi-icon { width:28px; height:28px; background:linear-gradient(135deg,#f59e0b,#ef4444); border-radius:4px; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; font-size:10px; color:white; }
+    .slide-counter { font-family:'Syne',sans-serif; font-size:11px; letter-spacing:0.12em; color:var(--muted); }
+
+    /* LAYOUT */
+    .slide { position:relative; z-index:10; height:100vh; display:grid; grid-template-columns:1fr 1.7fr; align-items:center; padding:70px 60px 70px 80px; gap:60px; }
+
+    /* LEFT */
+    .left { display:flex; flex-direction:column; gap:20px; animation:fadeUp 0.7s ease both; }
+    .section-tag { display:inline-flex; align-items:center; gap:8px; background:rgba(124,58,237,0.15); border:1px solid rgba(124,58,237,0.3); border-radius:100px; padding:5px 16px; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); width:fit-content; }
+    h1 { font-family:'Syne',sans-serif; font-size:clamp(30px,3.5vw,46px); font-weight:800; letter-spacing:-0.02em; line-height:1.1; }
+    h1 span { background:linear-gradient(90deg,var(--accent),#60a5fa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .desc { font-size:13px; color:var(--muted); line-height:1.6; }
+    .hint-click { margin-top:8px; display:flex; align-items:center; gap:8px; font-size:11px; color:var(--muted); font-style:italic; }
+    .hint-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 2s infinite; }
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+
+    /* RIGHT — pyramid rows */
+    .right { display:flex; flex-direction:column; gap:8px; justify-content:center; }
+
+    .pyramid-row {
+      display:flex;
+      align-items:stretch;
+      cursor:pointer;
+      text-decoration:none;
+      color:inherit;
+      opacity:0;
+      transform:translateX(80px);
+      animation:slideIn 0.65s cubic-bezier(0.34,1.2,0.64,1) forwards;
+    }
+    .pyramid-row:nth-child(1){animation-delay:0.08s;}
+    .pyramid-row:nth-child(2){animation-delay:0.22s;}
+    .pyramid-row:nth-child(3){animation-delay:0.36s;}
+    .pyramid-row:nth-child(4){animation-delay:0.5s;}
+
+    @keyframes slideIn{
+      from{opacity:0;transform:translateX(80px);}
+      to{opacity:1;transform:translateX(0);}
+    }
+
+    /* WEDGE — left colored tab */
+    .wedge {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      padding:18px 18px;
+      flex-shrink:0;
+      min-width:84px;
+      clip-path:polygon(0 0, 80% 0, 100% 50%, 80% 100%, 0 100%);
+      transition:filter 0.3s ease, transform 0.3s ease;
+      position:relative;
+      z-index:1;
+    }
+    .row-1 .wedge { background:linear-gradient(160deg,#7c3aed,#5b21b6); box-shadow:inset 0 0 20px rgba(255,255,255,0.05); }
+    .row-2 .wedge { background:linear-gradient(160deg,#2563eb,#1e40af); }
+    .row-3 .wedge { background:linear-gradient(160deg,#0891b2,#164e63); }
+    .row-4 .wedge { background:linear-gradient(160deg,#059669,#064e3b); }
+
+    .wedge-num { font-family:'Syne',sans-serif; font-size:10px; font-weight:700; color:rgba(255,255,255,0.45); letter-spacing:0.12em; }
+    .wedge-icon { font-size:24px; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+
+    /* PANEL */
+    .row-panel {
+      flex:1;
+      display:flex;
+      align-items:center;
+      padding:16px 24px 16px 24px;
+      margin-left:-2px;
+      clip-path:polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%);
+      position:relative;
+      overflow:hidden;
+      transition:padding-right 0.3s ease;
+    }
+    .row-1 .row-panel { background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(91,33,182,0.08)); border-top:1px solid rgba(124,58,237,0.3); border-bottom:1px solid rgba(124,58,237,0.3); }
+    .row-2 .row-panel { background:linear-gradient(135deg,rgba(37,99,235,0.2),rgba(29,78,216,0.08)); border-top:1px solid rgba(37,99,235,0.3); border-bottom:1px solid rgba(37,99,235,0.3); }
+    .row-3 .row-panel { background:linear-gradient(135deg,rgba(8,145,178,0.2),rgba(14,116,144,0.08)); border-top:1px solid rgba(8,145,178,0.3); border-bottom:1px solid rgba(8,145,178,0.3); }
+    .row-4 .row-panel { background:linear-gradient(135deg,rgba(5,150,105,0.2),rgba(4,120,87,0.08)); border-top:1px solid rgba(5,150,105,0.3); border-bottom:1px solid rgba(5,150,105,0.3); }
+
+    /* glow overlay on hover */
+    .row-panel::after {
+      content:'';
+      position:absolute; inset:0;
+      opacity:0;
+      transition:opacity 0.3s ease;
+    }
+    .row-1 .row-panel::after { background:radial-gradient(ellipse at 30% 50%,rgba(124,58,237,0.18),transparent 65%); }
+    .row-2 .row-panel::after { background:radial-gradient(ellipse at 30% 50%,rgba(37,99,235,0.18),transparent 65%); }
+    .row-3 .row-panel::after { background:radial-gradient(ellipse at 30% 50%,rgba(8,145,178,0.18),transparent 65%); }
+    .row-4 .row-panel::after { background:radial-gradient(ellipse at 30% 50%,rgba(5,150,105,0.18),transparent 65%); }
+
+    .pyramid-row:hover .row-panel::after { opacity:1; }
+    .pyramid-row:hover .wedge { filter:brightness(1.25); transform:scaleX(1.05); transform-origin:left; }
+    .pyramid-row:hover .row-panel { padding-right:40px; }
+
+    .panel-content { position:relative; z-index:1; display:flex; flex-direction:column; gap:5px; flex:1; }
+    .panel-meta { display:flex; align-items:center; gap:8px; }
+    .panel-label { font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(240,234,248,0.35); }
+    .panel-title { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:var(--white); line-height:1.2; }
+    .panel-sub { font-size:11px; color:var(--muted); font-style:italic; }
+    .panel-chips { display:flex; gap:5px; flex-wrap:wrap; margin-top:4px; }
+    .chip { font-size:10px; padding:2px 9px; border-radius:100px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:rgba(240,234,248,0.55); transition:all 0.2s ease; }
+    .pyramid-row:hover .chip { background:rgba(255,255,255,0.1); color:var(--white); border-color:rgba(255,255,255,0.2); }
+
+    .panel-arrow { font-size:20px; opacity:0; transition:opacity 0.3s ease, transform 0.3s ease; transform:translateX(-8px); flex-shrink:0; margin-left:auto; padding-right:16px; }
+    .row-1 .panel-arrow { color:#a78bfa; }
+    .row-2 .panel-arrow { color:#60a5fa; }
+    .row-3 .panel-arrow { color:#22d3ee; }
+    .row-4 .panel-arrow { color:#34d399; }
+    .pyramid-row:hover .panel-arrow { opacity:1; transform:translateX(0); }
+
+    /* BOTTOM NAV */
+    .bottom-nav { position:fixed; bottom:28px; left:0; right:0; z-index:99; display:flex; align-items:center; justify-content:space-between; padding:0 60px; }
+    .nav-info { font-size:12px; color:var(--muted); font-family:'Syne',sans-serif; letter-spacing:0.08em; }
+    .nav-buttons { display:flex; gap:12px; }
+    .btn { display:flex; align-items:center; gap:8px; padding:12px 24px; border-radius:100px; font-family:'Syne',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; border:none; text-decoration:none; transition:all 0.25s ease; }
+    .btn-ghost { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--muted); }
+    .btn-ghost:hover { background:rgba(255,255,255,0.1); color:var(--white); }
+    .btn-primary { background:linear-gradient(135deg,var(--violet),var(--indigo)); color:white; box-shadow:0 4px 24px rgba(99,57,160,0.4); }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(99,57,160,0.6); }
+    .btn svg { width:16px; height:16px; }
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+  </style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="grid"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill"></div></div>
+
+<nav class="top-nav">
+  <div class="pmi-badge">
+    <div class="pmi-icon">PM</div>
+    PMBOK® Guide · 8th Edition
+  </div>
+  <div class="slide-counter">Слайд 3 / 9 · Урок 1</div>
+</nav>
+
+<main class="slide">
+
+  <div class="left">
+    <div class="section-tag">📋 Зміст уроку</div>
+    <h1>Розділи<br>цього <span>уроку</span></h1>
+    <p class="desc">Sections in this Resource<br>Оберіть розділ або рухайтесь послідовно</p>
+    <div class="hint-click">
+      <span class="hint-dot"></span>
+      Натисніть на розділ щоб перейти
+    </div>
+  </div>
+
+  <div class="right">
+
+    <a class="pyramid-row row-1" href="slide4.html">
+      <div class="wedge">
+        <div class="wedge-num">01</div>
+        <div class="wedge-icon">🎯</div>
+      </div>
+      <div class="row-panel">
+        <div class="panel-content">
+          <div class="panel-label">Секція 1 · Section 1</div>
+          <div class="panel-title">Що таке проєкт?</div>
+          <div class="panel-sub">What is a Project?</div>
+          <div class="panel-chips">
+            <span class="chip">Тимчасовий</span>
+            <span class="chip">Унікальний</span>
+            <span class="chip">Цінність</span>
+          </div>
+        </div>
+        <div class="panel-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="pyramid-row row-2" href="slide5.html">
+      <div class="wedge">
+        <div class="wedge-num">02</div>
+        <div class="wedge-icon">📖</div>
+      </div>
+      <div class="row-panel">
+        <div class="panel-content">
+          <div class="panel-label">Секція 2 · Section 2</div>
+          <div class="panel-title">Ключові терміни</div>
+          <div class="panel-sub">Key Terms & Concepts</div>
+          <div class="panel-chips">
+            <span class="chip">Артефакт</span>
+            <span class="chip">Результат</span>
+            <span class="chip">ПМО</span>
+          </div>
+        </div>
+        <div class="panel-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="pyramid-row row-3" href="slide6.html">
+      <div class="wedge">
+        <div class="wedge-num">03</div>
+        <div class="wedge-icon">⚙️</div>
+      </div>
+      <div class="row-panel">
+        <div class="panel-content">
+          <div class="panel-label">Секція 3 · Section 3</div>
+          <div class="panel-title">Управління проєктами</div>
+          <div class="panel-sub">Project Management</div>
+          <div class="panel-chips">
+            <span class="chip">Роль PM</span>
+            <span class="chip">Цінність</span>
+            <span class="chip">ШІ</span>
+          </div>
+        </div>
+        <div class="panel-arrow">→</div>
+      </div>
+    </a>
+
+    <a class="pyramid-row row-4" href="slide7.html">
+      <div class="wedge">
+        <div class="wedge-num">04</div>
+        <div class="wedge-icon">🏗️</div>
+      </div>
+      <div class="row-panel">
+        <div class="panel-content">
+          <div class="panel-label">Секція 4 · Section 4</div>
+          <div class="panel-title">Портфель · Програма · Проєкт</div>
+          <div class="panel-sub">Portfolio · Program · Project</div>
+          <div class="panel-chips">
+            <span class="chip">Рівні</span>
+            <span class="chip">Відмінності</span>
+            <span class="chip">Стратегія</span>
+          </div>
+        </div>
+        <div class="panel-arrow">→</div>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<nav class="bottom-nav">
+  <div class="nav-info">Урок 1 · Вступ до управління проєктами</div>
+  <div class="nav-buttons">
+    <a class="btn btn-ghost" href="slide2.html">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+      НАЗАД
+    </a>
+    <a class="btn btn-primary" href="slide4.html">
+      ДАЛІ
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg>
+    </a>
+  </div>
+</nav>
+
+</body>
+</html>
